@@ -1,17 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const CheckingAccount_1 = require("../student-work/CheckingAccount");
+const SavingsAccount_1 = require("../student-work/SavingsAccount");
+const RetirementAccount_1 = require("../student-work/RetirementAccount");
 class AccountFactory {
     static getCheckingAccountObject(currentDate) {
-        throw new Error("You need to implement this :)");
+        return new CheckingAccount_1.CheckingAccount;
     }
     static getSavingsAccountObject(currentDate) {
-        throw new Error("You need to implement this :)");
+        return new SavingsAccount_1.SavingsAccount();
     }
     //static doesn't belong to the instance of the class, it belongs to the "cookie cutter"
     // let newAccount = AccountFactory.getCheckingAccountObject(new Date());
     // Math.random
     static getRetirementAccountObject(currentDate, accountHolderBirthDate) {
-        throw new Error("You need to implement this :)");
+        return new RetirementAccount_1.RetirementAccount();
     }
 }
 exports.AccountFactory = AccountFactory;

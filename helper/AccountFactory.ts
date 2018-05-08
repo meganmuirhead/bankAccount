@@ -1,13 +1,17 @@
 import {Account} from "../common/interfaces/Account";
+import { CheckingAccount } from '../student-work/CheckingAccount'
+import {SavingsAccount} from "../student-work/SavingsAccount";
+import {RetirementAccount} from "../student-work/RetirementAccount";
+
 
 export class AccountFactory {
 
     static getCheckingAccountObject(currentDate: Date): Account {
-        throw new Error("You need to implement this :)");
+        return new CheckingAccount;
     }
 
     static getSavingsAccountObject(currentDate: Date): Account {
-        throw new Error("You need to implement this :)");
+        return new SavingsAccount();
     }
 //static doesn't belong to the instance of the class, it belongs to the "cookie cutter"
 
@@ -16,7 +20,7 @@ export class AccountFactory {
 
 
     static getRetirementAccountObject(currentDate: Date, accountHolderBirthDate: Date): Account {
-        throw new Error("You need to implement this :)");
+        return new RetirementAccount();
     }
 
 }

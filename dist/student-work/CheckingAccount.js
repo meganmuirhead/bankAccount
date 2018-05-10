@@ -1,10 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BankAccount_1 = require("./BankAccount");
-const TransactionOrigin_1 = require("../common/enums/TransactionOrigin");
 class CheckingAccount extends BankAccount_1.BankAccount {
+    constructor(currentDate) {
+        super();
+        this.currentDate = currentDate;
+        this.balance = 1000;
+    }
+    advanceDate(numberOfDays) {
+    }
+    depositMoney(amount, description) {
+        return undefined;
+    }
+    withdrawMoney(amount, description, transactionOrigin) {
+        return undefined;
+    }
 }
 exports.CheckingAccount = CheckingAccount;
-let checking = new CheckingAccount();
-checking.withdrawMoney(1, '', TransactionOrigin_1.TransactionOrigin.BRANCH);
 //# sourceMappingURL=CheckingAccount.js.map

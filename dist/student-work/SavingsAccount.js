@@ -6,6 +6,14 @@ class SavingsAccount extends BankAccount_1.BankAccount {
         super();
         this.balance = 10000;
     }
+    advanceDate(numberOfDays) {
+    }
+    depositMoney(amount, description) {
+        return undefined;
+    }
+    withdrawMoney(amount, description, transactionOrigin) {
+        return undefined;
+    }
 }
 exports.SavingsAccount = SavingsAccount;
 //# sourceMappingURL=SavingsAccount.js.map

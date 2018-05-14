@@ -22,14 +22,18 @@ export class CheckingAccount extends BankAccount{
     advanceDate(numberOfDays: number) {
         let dateClone = new Date(this.currentDate.getTime());
 
+        console.log(dateClone);
+
         this.currentDate.setDate(this.currentDate.getDate() + numberOfDays);
         let numberOfMonths = this.monthDiff(dateClone, this.currentDate);
         dateClone.setDate(1);
 
-        for(let i = 0; i <= numberOfMonths; i++){
+        for(let i = 0; i < numberOfMonths; i++){
             dateClone.setMonth(dateClone.getMonth() + 1);
             let interestTot = this.interestRateCalculateor();
+            interestTot = Number.parseFloat(interestTot.toFixed(2))
             this.balance += interestTot;
+            this.balance = Number.parseFloat(this.balance.toFixed(2));
             // trans is of type Transaction .. interface kind of blah
             let trans = {
                 success: true,
@@ -39,18 +43,46 @@ export class CheckingAccount extends BankAccount{
                 description: "Interest Payment",
                 errorMessage: "" // errorMessage will be an empty string when success is true
             };
-            this.accountHistory.push(trans)
-            
+            this.accountHistory.push(trans);
         }
+
     }
 
 
     depositMoney(amount: number, description: string): Transaction {
-        return undefined;
+        let checkingAccountTransaction = {
+            success: true,
+            amount: amount,
+            resultBalance: this.balance + amount,
+            transactionDate: this.currentDate,
+            description: description,
+            errorMessage: "" // errorMessage will be an empty string when success is true
+        };
+        this.balance = this.balance + amount;
+        this.accountHistory.push(checkingAccountTransaction);
+        return checkingAccountTransaction;
     }
 
     withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction {
-        return undefined;
+        let checkingWithdrawMoney = < Transaction > {
+            amount: -amount,
+            transactionDate: this.currentDate,
+            description: description,
+        };
+
+        if(amount >= this.balance){
+            checkingWithdrawMoney.success = false;
+            checkingWithdrawMoney.resultBalance = this.balance;
+            checkingWithdrawMoney.errorMessage = "Insuffient Funds";
+            return checkingWithdrawMoney;
+        }
+        this.balance = this.balance - amount;
+        checkingWithdrawMoney.success = true;
+        checkingWithdrawMoney.resultBalance = this.balance;
+        checkingWithdrawMoney.errorMessage= "";
+        this.accountHistory.push(checkingWithdrawMoney);
+
+        return checkingWithdrawMoney;
     }
     interestRateCalculateor(): number{
 

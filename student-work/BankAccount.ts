@@ -14,4 +14,8 @@ export abstract class BankAccount implements Account {
 
     abstract withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction;
 
+    abstract monthDiff(date: Date, differentDate: Date): number;
+
+    abstract interestRateCalculator(): number;
 }
+

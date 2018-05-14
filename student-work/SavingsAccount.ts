@@ -7,8 +7,6 @@ export class SavingsAccount extends BankAccount {
         super();
         this.balance = 10000;
         this.accountHistory = [];
-
-
     }
 
     accountHolderBirthDate: Date;
@@ -24,19 +22,16 @@ export class SavingsAccount extends BankAccount {
     advanceDate(numberOfDays: number) {
         let dateClone = new Date(this.currentDate.getTime());
 
-        console.log(dateClone);
-
         this.currentDate.setDate(this.currentDate.getDate() + numberOfDays);
-        console.log(this.currentDate);
         let numberOfMonths = this.monthDiff(dateClone, this.currentDate);
-        console.log(numberOfMonths);
         dateClone.setDate(1);
 
         for(let i = 0; i < numberOfMonths; i++){
-            console.log(i)
             dateClone.setMonth(dateClone.getMonth() + 1);
-            let interestTot = this.interestRateCalculateor();
+            let interestTot = this.interestRateCalculator();
+            interestTot = Number.parseFloat(interestTot.toFixed(2))
             this.balance += interestTot;
+            this.balance = Number.parseFloat(this.balance.toFixed(2));
             // trans is of type Transaction .. interface kind of blah
             let trans = {
                 success: true,
@@ -47,11 +42,10 @@ export class SavingsAccount extends BankAccount {
                 errorMessage: "" // errorMessage will be an empty string when success is true
             };
             this.accountHistory.push(trans);
-            console.log(trans);
         }
-        console.log(this.balance);
-        console.log("history length:", this.accountHistory.length);
+
     }
+
 
 
     withdrawWithInsufficaientFunds() {
@@ -59,7 +53,45 @@ export class SavingsAccount extends BankAccount {
             throw new Error('Insufficient funds');
         }
     }
-    interestRateCalculateor(): number{
+
+
+    depositMoney(amount: number, description: string): Transaction {
+        let savingAccountTransaction = {
+            success: true,
+            amount: amount,
+            resultBalance: this.balance + amount,
+            transactionDate: this.currentDate,
+            description: description,
+            errorMessage: "" // errorMessage will be an empty string when success is true
+        };
+        this.balance = this.balance + amount;
+        this.accountHistory.push(savingAccountTransaction);
+        return savingAccountTransaction;
+    }
+
+    withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction {
+        let savingWithdrawMoney = < Transaction > {
+            amount: -amount,
+            transactionDate: this.currentDate,
+            description: description,
+        };
+
+        if(amount >= this.balance){
+            savingWithdrawMoney.success = false;
+            savingWithdrawMoney.resultBalance = this.balance;
+            savingWithdrawMoney.errorMessage = "Insuffient Funds";
+            return savingWithdrawMoney;
+        }
+        this.balance = this.balance - amount;
+        savingWithdrawMoney.success = true;
+        savingWithdrawMoney.resultBalance = this.balance;
+        savingWithdrawMoney.errorMessage= "";
+        this.accountHistory.push(savingWithdrawMoney);
+
+        return savingWithdrawMoney;
+    }
+
+    interestRateCalculator(): number{
 
         let interest: number, total: number, rate: number;
         rate = .02;
@@ -68,18 +100,4 @@ export class SavingsAccount extends BankAccount {
         return interest;
     }
 
-    depositMoney(amount: number, description: string): Transaction {
-        return undefined;
-    }
-
-    withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction {
-        return undefined;
-    }
-
-//     if (currentDate => 30 && Tranactio) {}
-// }
-
-//
-// let savings = new SavingsAccount(1/1/2018);
-// savings.withdrawMoney(7, TransactionOrigin.BRANCH)
 }

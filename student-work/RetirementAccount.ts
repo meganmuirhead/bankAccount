@@ -7,8 +7,6 @@ export class RetirementAccount extends BankAccount{
         super();
         this.balance = 100000;
         this.accountHistory = [];
-
-
     }
 
     accountHolderBirthDate: Date;
@@ -24,19 +22,16 @@ export class RetirementAccount extends BankAccount{
     advanceDate(numberOfDays: number) {
         let dateClone = new Date(this.currentDate.getTime());
 
-        console.log(dateClone);
-
         this.currentDate.setDate(this.currentDate.getDate() + numberOfDays);
-        console.log(this.currentDate);
         let numberOfMonths = this.monthDiff(dateClone, this.currentDate);
-        console.log(numberOfMonths);
         dateClone.setDate(1);
 
         for(let i = 0; i < numberOfMonths; i++){
-            console.log(i)
             dateClone.setMonth(dateClone.getMonth() + 1);
-            let interestTot = this.interestRateCalculateor();
+            let interestTot = this.interestRateCalculator();
+            interestTot = Number.parseFloat(interestTot.toFixed(2))
             this.balance += interestTot;
+            this.balance = Number.parseFloat(this.balance.toFixed(2));
             // trans is of type Transaction .. interface kind of blah
             let trans = {
                 success: true,
@@ -47,12 +42,10 @@ export class RetirementAccount extends BankAccount{
                 errorMessage: "" // errorMessage will be an empty string when success is true
             };
             this.accountHistory.push(trans);
-            console.log(trans);
         }
-        console.log(this.balance);
-        console.log("history length:", this.accountHistory.length);
+
     }
-    interestRateCalculateor(): number{
+    interestRateCalculator(): number{
 
         let interest: number, total: number, rate: number;
         rate = .03;

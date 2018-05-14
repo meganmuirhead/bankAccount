@@ -16,17 +16,15 @@ class SavingsAccount extends BankAccount_1.BankAccount {
     }
     advanceDate(numberOfDays) {
         let dateClone = new Date(this.currentDate.getTime());
-        console.log(dateClone);
         this.currentDate.setDate(this.currentDate.getDate() + numberOfDays);
-        console.log(this.currentDate);
         let numberOfMonths = this.monthDiff(dateClone, this.currentDate);
-        console.log(numberOfMonths);
         dateClone.setDate(1);
         for (let i = 0; i < numberOfMonths; i++) {
-            console.log(i);
             dateClone.setMonth(dateClone.getMonth() + 1);
-            let interestTot = this.interestRateCalculateor();
+            let interestTot = this.interestRateCalculator();
+            interestTot = Number.parseFloat(interestTot.toFixed(2));
             this.balance += interestTot;
+            this.balance = Number.parseFloat(this.balance.toFixed(2));
             // trans is of type Transaction .. interface kind of blah
             let trans = {
                 success: true,
@@ -37,27 +35,50 @@ class SavingsAccount extends BankAccount_1.BankAccount {
                 errorMessage: "" // errorMessage will be an empty string when success is true
             };
             this.accountHistory.push(trans);
-            console.log(trans);
         }
-        console.log(this.balance);
-        console.log("history length:", this.accountHistory.length);
     }
     withdrawWithInsufficaientFunds() {
         if (this.balance <= this.balance) {
             throw new Error('Insufficient funds');
         }
     }
-    interestRateCalculateor() {
+    depositMoney(amount, description) {
+        let savingAccountTransaction = {
+            success: true,
+            amount: amount,
+            resultBalance: this.balance + amount,
+            transactionDate: this.currentDate,
+            description: description,
+            errorMessage: "" // errorMessage will be an empty string when success is true
+        };
+        this.balance = this.balance + amount;
+        this.accountHistory.push(savingAccountTransaction);
+        return savingAccountTransaction;
+    }
+    withdrawMoney(amount, description, transactionOrigin) {
+        let savingWithdrawMoney = {
+            amount: -amount,
+            transactionDate: this.currentDate,
+            description: description,
+        };
+        if (amount >= this.balance) {
+            savingWithdrawMoney.success = false;
+            savingWithdrawMoney.resultBalance = this.balance;
+            savingWithdrawMoney.errorMessage = "Insuffient Funds";
+            return savingWithdrawMoney;
+        }
+        this.balance = this.balance - amount;
+        savingWithdrawMoney.success = true;
+        savingWithdrawMoney.resultBalance = this.balance;
+        savingWithdrawMoney.errorMessage = "";
+        this.accountHistory.push(savingWithdrawMoney);
+        return savingWithdrawMoney;
+    }
+    interestRateCalculator() {
         let interest, total, rate;
         rate = .02;
         interest = this.balance * rate / 12;
         return interest;
-    }
-    depositMoney(amount, description) {
-        return undefined;
-    }
-    withdrawMoney(amount, description, transactionOrigin) {
-        return undefined;
     }
 }
 exports.SavingsAccount = SavingsAccount;

@@ -17,13 +17,12 @@ class CheckingAccount extends BankAccount_1.BankAccount {
     }
     advanceDate(numberOfDays) {
         let dateClone = new Date(this.currentDate.getTime());
-        console.log(dateClone);
         this.currentDate.setDate(this.currentDate.getDate() + numberOfDays);
         let numberOfMonths = this.monthDiff(dateClone, this.currentDate);
         dateClone.setDate(1);
         for (let i = 0; i < numberOfMonths; i++) {
             dateClone.setMonth(dateClone.getMonth() + 1);
-            let interestTot = this.interestRateCalculateor();
+            let interestTot = this.interestRateCalculator();
             interestTot = Number.parseFloat(interestTot.toFixed(2));
             this.balance += interestTot;
             this.balance = Number.parseFloat(this.balance.toFixed(2));
@@ -71,7 +70,7 @@ class CheckingAccount extends BankAccount_1.BankAccount {
         this.accountHistory.push(checkingWithdrawMoney);
         return checkingWithdrawMoney;
     }
-    interestRateCalculateor() {
+    interestRateCalculator() {
         let interest, total, rate;
         rate = .01;
         interest = this.balance * rate / 12;

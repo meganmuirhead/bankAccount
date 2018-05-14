@@ -3,7 +3,7 @@ import { TransactionOrigin} from "../common/enums/TransactionOrigin";
 import { Transaction } from "../common/interfaces/Transaction";
 
 export class SavingsAccount extends BankAccount {
-    constructor(currentDate: Date) {
+    constructor(public currentDate: Date) {
         super();
         this.balance = 10000;
         this.accountHistory = [];

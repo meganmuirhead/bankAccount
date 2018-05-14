@@ -4,6 +4,7 @@ const BankAccount_1 = require("./BankAccount");
 class SavingsAccount extends BankAccount_1.BankAccount {
     constructor(currentDate) {
         super();
+        this.currentDate = currentDate;
         this.balance = 10000;
         this.accountHistory = [];
     }

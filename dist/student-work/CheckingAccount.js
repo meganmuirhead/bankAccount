@@ -57,7 +57,7 @@ class CheckingAccount extends BankAccount_1.BankAccount {
             transactionDate: this.currentDate,
             description: description,
         };
-        if (amount >= this.balance) {
+        if (amount > this.balance) {
             checkingWithdrawMoney.success = false;
             checkingWithdrawMoney.resultBalance = this.balance;
             checkingWithdrawMoney.errorMessage = "Insuffient Funds";

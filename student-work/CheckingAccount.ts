@@ -68,7 +68,7 @@ export class CheckingAccount extends BankAccount{
             description: description,
         };
 
-        if(amount >= this.balance){
+        if(amount > this.balance){
             checkingWithdrawMoney.success = false;
             checkingWithdrawMoney.resultBalance = this.balance;
             checkingWithdrawMoney.errorMessage = "Insuffient Funds";

@@ -82,16 +82,37 @@ export class SavingsAccount extends BankAccount {
             savingWithdrawMoney.errorMessage = "Insuffient Funds";
             return savingWithdrawMoney;
         }
+        if (this.checkWebAndPhone()) {
+            //todo return an error transaction
+            savingWithdrawMoney.success = false;
+            savingWithdrawMoney.resultBalance = this.balance;
+            savingWithdrawMoney.errorMessage = "Can't transfer more than six times via phone/web per month.";
+            return savingWithdrawMoney;
+        }
+
+        //todo: what the trans
         this.balance = this.balance - amount;
         savingWithdrawMoney.success = true;
         savingWithdrawMoney.resultBalance = this.balance;
         savingWithdrawMoney.errorMessage= "";
+        savingWithdrawMoney.transactionOrigin = transactionOrigin;
         this.accountHistory.push(savingWithdrawMoney);
 
         return savingWithdrawMoney;
     }
 
-    interestRateCalculator(): number{
+    private checkWebAndPhone(): boolean {
+        //todo: set counter to 0
+        //todo: loop through account.history []
+        // todo: if transactionOrigin is web or phone
+        //    todo: compare transaction.transactionDate to this.currentDate
+        //        todo: increment counter
+        //todo: return true if counter > 6 else return false
+
+        return false;
+    }
+
+    interestRateCalculator(): number {
 
         let interest: number, total: number, rate: number;
         rate = .02;
@@ -99,5 +120,11 @@ export class SavingsAccount extends BankAccount {
 
         return interest;
     }
+
+
+
+
+
+
 
 }

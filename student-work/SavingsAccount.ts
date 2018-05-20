@@ -83,33 +83,48 @@ export class SavingsAccount extends BankAccount {
             return savingWithdrawMoney;
         }
         if (this.checkWebAndPhone()) {
-            //todo return an error transaction
             savingWithdrawMoney.success = false;
             savingWithdrawMoney.resultBalance = this.balance;
+           // console.log(this.balance);
             savingWithdrawMoney.errorMessage = "Can't transfer more than six times via phone/web per month.";
             return savingWithdrawMoney;
         }
 
-        //todo: what the trans
         this.balance = this.balance - amount;
         savingWithdrawMoney.success = true;
         savingWithdrawMoney.resultBalance = this.balance;
         savingWithdrawMoney.errorMessage= "";
         savingWithdrawMoney.transactionOrigin = transactionOrigin;
         this.accountHistory.push(savingWithdrawMoney);
+        // console.log(this.balance);
 
         return savingWithdrawMoney;
     }
 
     private checkWebAndPhone(): boolean {
-        //todo: set counter to 0
-        //todo: loop through account.history []
-        // todo: if transactionOrigin is web or phone
-        //    todo: compare transaction.transactionDate to this.currentDate
-        //        todo: increment counter
-        //todo: return true if counter > 6 else return false
+        // console.log("checking web and phone");
+        let counter = 0;
+        for(var i = 0; i < this.accountHistory.length; i++) {
+            let transaction = this.accountHistory[i];
+            // console.log(transaction.transactionDate, transaction.transactionOrigin);
+            if (transaction.transactionOrigin === TransactionOrigin.WEB ||
+                transaction.transactionOrigin === TransactionOrigin.PHONE) {
+                if (this.currentDate.getMonth() === transaction.transactionDate.getMonth() &&
+                    this.currentDate.getFullYear() === transaction.transactionDate.getFullYear()) {
+                    // console.log("encomenting counter");
+                    counter++;
+                }
+            }
+        }
+        // console.log(counter);
+        if (counter <= 6)
+        {
+            // console.log("returning false");
+            return false;
+        }
+        // console.log("returning true");
 
-        return false;
+        return true;
     }
 
     interestRateCalculator(): number {
@@ -120,11 +135,5 @@ export class SavingsAccount extends BankAccount {
 
         return interest;
     }
-
-
-
-
-
-
 
 }

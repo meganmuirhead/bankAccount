@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BankAccount_1 = require("./BankAccount");
+const TransactionOrigin_1 = require("../common/enums/TransactionOrigin");
 class SavingsAccount extends BankAccount_1.BankAccount {
     constructor(currentDate) {
         super();
@@ -69,29 +70,43 @@ class SavingsAccount extends BankAccount_1.BankAccount {
             return savingWithdrawMoney;
         }
         if (this.checkWebAndPhone()) {
-            //todo return an error transaction
             savingWithdrawMoney.success = false;
             savingWithdrawMoney.resultBalance = this.balance;
+            // console.log(this.balance);
             savingWithdrawMoney.errorMessage = "Can't transfer more than six times via phone/web per month.";
             return savingWithdrawMoney;
         }
-        //todo: what the trans
         this.balance = this.balance - amount;
         savingWithdrawMoney.success = true;
         savingWithdrawMoney.resultBalance = this.balance;
         savingWithdrawMoney.errorMessage = "";
         savingWithdrawMoney.transactionOrigin = transactionOrigin;
         this.accountHistory.push(savingWithdrawMoney);
+        // console.log(this.balance);
         return savingWithdrawMoney;
     }
     checkWebAndPhone() {
-        //todo: set counter to 0
-        //todo: loop through account.history []
-        // todo: if transactionOrigin is web or phone
-        //    todo: compare transaction.transactionDate to this.currentDate
-        //        todo: increment counter
-        //todo: return true if counter > 6 else return false
-        return false;
+        // console.log("checking web and phone");
+        let counter = 0;
+        for (var i = 0; i < this.accountHistory.length; i++) {
+            let transaction = this.accountHistory[i];
+            // console.log(transaction.transactionDate, transaction.transactionOrigin);
+            if (transaction.transactionOrigin === TransactionOrigin_1.TransactionOrigin.WEB ||
+                transaction.transactionOrigin === TransactionOrigin_1.TransactionOrigin.PHONE) {
+                if (this.currentDate.getMonth() === transaction.transactionDate.getMonth() &&
+                    this.currentDate.getFullYear() === transaction.transactionDate.getFullYear()) {
+                    // console.log("encomenting counter");
+                    counter++;
+                }
+            }
+        }
+        // console.log(counter);
+        if (counter <= 6) {
+            // console.log("returning false");
+            return false;
+        }
+        // console.log("returning true");
+        return true;
     }
     interestRateCalculator() {
         let interest, total, rate;

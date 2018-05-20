@@ -52,7 +52,6 @@ describe("A savings account", () => {
         let fourth = savings.withdrawMoney(10, "test 4", TransactionOrigin.PHONE);
         expect(savings.balance).toBeCloseTo(9960);
         expect(fourth.success).toBeTruthy("On test 4");
-
         savings.advanceDate(5);
         let fifth = savings.withdrawMoney(10, "test 5", TransactionOrigin.WEB);
         expect(savings.balance).toBeCloseTo(9950);

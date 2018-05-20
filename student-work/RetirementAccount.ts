@@ -54,11 +54,37 @@ export class RetirementAccount extends BankAccount{
         return interest;
     }
     depositMoney(amount: number, description: string): Transaction {
-        return undefined;
+        let retirementAccountTransaction = {
+            success: true,
+            amount: amount,
+            resultBalance: this.balance + amount,
+            transactionDate: this.currentDate,
+            description: description,
+            errorMessage: "" // errorMessage will be an empty string when success is true
+        };
+        this.balance = this.balance + amount;
+        this.accountHistory.push(retirementAccountTransaction);
+        return retirementAccountTransaction;
     }
 
     withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction {
-        return undefined;
+        let retirementWithdraw = < Transaction > {
+            amount: -amount,
+            transactionDate: this.currentDate,
+            description: description
+        };
+        if (amount > this.balance){
+            retirementWithdraw.success = false;
+            retirementWithdraw.resultBalance = this.balance;
+            retirementWithdraw.errorMessage = "Insuffient Funds";
+            return retirementWithdraw;
+        }
+        this.balance = this.balance - amount;
+        retirementWithdraw.success = true;
+        retirementWithdraw.resultBalance = this.balance;
+        retirementWithdraw.errorMessage = "";
+        this.accountHistory.push(retirementWithdraw);
+        return retirementWithdraw;
     }
 
 

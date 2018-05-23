@@ -50,7 +50,7 @@ describe("A retirement account", () => {
         expect(retirement.balance).toBe(expectedNewBalance, "Retirement account's new balance is not correct.");
         expect(withdrawal.resultBalance).toBe(expectedNewBalance, "Transaction's resulting balance is not correct.");
     });
-    it("charges a no fee on a withdrawal when the account holder is sixty years old or older (Retirement Account Requirement #7)", () => {
+    fit("charges a no fee on a withdrawal when the account holder is sixty years old or older (Retirement Account Requirement #7)", () => {
         let retirement = AccountFactory.getRetirementAccountObject(new Date(2000, 0, 1), new Date(1930, 6, 1));
         retirement.accountHolderBirthDate = new Date(1950, 6, 1);
         let expectedNewBalance = retirement.balance - 10000;

@@ -1,15 +1,14 @@
 import { BankAccount } from "./BankAccount";
 import { Transaction} from "../common/interfaces/Transaction";
 import { TransactionOrigin } from "../common/enums/TransactionOrigin";
+import * as moment from "moment";
 
 export class RetirementAccount extends BankAccount{
-    constructor(public currentDate: Date) {
+    constructor(public currentDate: Date, public accountHolderBirthDate: Date) {
         super();
         this.balance = 100000;
         this.accountHistory = [];
     }
-
-    accountHolderBirthDate: Date;
 
     monthDiff(d1: Date, d2: Date): number {
         let months: number;
@@ -66,6 +65,8 @@ export class RetirementAccount extends BankAccount{
         this.accountHistory.push(retirementAccountTransaction);
         return retirementAccountTransaction;
     }
+//todo check for age over or under 60
+    //todo add fee if they are under 60, 60 no fee, 59 gets the fee
 
     withdrawMoney(amount: number, description: string, transactionOrigin: TransactionOrigin): Transaction {
         let retirementWithdraw = < Transaction > {
@@ -79,6 +80,9 @@ export class RetirementAccount extends BankAccount{
             retirementWithdraw.errorMessage = "Insuffient Funds";
             return retirementWithdraw;
         }
+        if (!this.isOverSixty()){
+            amount = amount + (amount * .1);
+        }
         this.balance = this.balance - amount;
         retirementWithdraw.success = true;
         retirementWithdraw.resultBalance = this.balance;
@@ -86,6 +90,13 @@ export class RetirementAccount extends BankAccount{
         this.accountHistory.push(retirementWithdraw);
         return retirementWithdraw;
     }
-
+    isOverSixty(): boolean{
+        let duration = moment.duration(moment(this.currentDate).diff(this.accountHolderBirthDate));
+        console.log(duration.asYears());
+        if (duration.asYears() < 60) {
+            return false;
+        }
+     return true;
+    }
 
 }

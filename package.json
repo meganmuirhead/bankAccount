@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "This is the seed project for the Banking System Project in the TypeScript module.",
   "main": "app.js",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.22.1"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.5.53",
     "jasmine": "^2.6.0",

@@ -103,6 +103,9 @@ export class SavingsAccount extends BankAccount {
 
     private checkWebAndPhone(): boolean {
         // console.log("checking web and phone");
+        //todo right now counter is being reset to zero
+        //todo set counter as a property
+        //todo need to reset counter for each calendar month
         let counter = 0;
         for(var i = 0; i < this.accountHistory.length; i++) {
             let transaction = this.accountHistory[i];

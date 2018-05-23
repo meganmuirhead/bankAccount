@@ -21,7 +21,7 @@ export class AccountFactory {
 
 
     static getRetirementAccountObject(currentDate: Date, accountHolderBirthDate: Date): Account {
-        return new RetirementAccount(currentDate);
+        return new RetirementAccount(currentDate, accountHolderBirthDate);
     }
 
 }

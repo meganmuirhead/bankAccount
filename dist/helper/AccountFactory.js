@@ -14,7 +14,7 @@ class AccountFactory {
     // let newAccount = AccountFactory.getCheckingAccountObject(new Date());
     // Math.random
     static getRetirementAccountObject(currentDate, accountHolderBirthDate) {
-        return new RetirementAccount_1.RetirementAccount(currentDate);
+        return new RetirementAccount_1.RetirementAccount(currentDate, accountHolderBirthDate);
     }
 }
 exports.AccountFactory = AccountFactory;

@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const BankAccount_1 = require("./BankAccount");
+const moment = require("moment");
 class RetirementAccount extends BankAccount_1.BankAccount {
-    constructor(currentDate) {
+    constructor(currentDate, accountHolderBirthDate) {
         super();
         this.currentDate = currentDate;
+        this.accountHolderBirthDate = accountHolderBirthDate;
         this.balance = 100000;
         this.accountHistory = [];
     }
@@ -57,6 +59,8 @@ class RetirementAccount extends BankAccount_1.BankAccount {
         this.accountHistory.push(retirementAccountTransaction);
         return retirementAccountTransaction;
     }
+    //todo check for age over or under 60
+    //todo add fee if they are under 60, 60 no fee, 59 gets the fee
     withdrawMoney(amount, description, transactionOrigin) {
         let retirementWithdraw = {
             amount: -amount,
@@ -69,12 +73,23 @@ class RetirementAccount extends BankAccount_1.BankAccount {
             retirementWithdraw.errorMessage = "Insuffient Funds";
             return retirementWithdraw;
         }
+        if (!this.isOverSixty()) {
+            amount = amount + (amount * .1);
+        }
         this.balance = this.balance - amount;
         retirementWithdraw.success = true;
         retirementWithdraw.resultBalance = this.balance;
         retirementWithdraw.errorMessage = "";
         this.accountHistory.push(retirementWithdraw);
         return retirementWithdraw;
+    }
+    isOverSixty() {
+        let duration = moment.duration(moment(this.currentDate).diff(this.accountHolderBirthDate));
+        console.log(duration.asYears());
+        if (duration.asYears() < 60) {
+            return false;
+        }
+        return true;
     }
 }
 exports.RetirementAccount = RetirementAccount;
